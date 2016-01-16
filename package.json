@@ -24,7 +24,8 @@
   },
   "homepage": "https://github.com/lelandrichardson/react-native-segmented-view",
   "dependencies": {
-    "react-tween-state": "0.0.5"
+    "react-tween-state": "0.1.4",
+    "react-native-viewport-units": "0.0.5"
   },
   "peerDependencies": {
     "react-native": ">= 0.16"
