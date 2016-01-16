@@ -1,5 +1,5 @@
 var React = require('react-native');
-var { vw, vh, vmin, vmax } = require('react-native-viewport-units');
+var { vw, vh, vmin, vmax } = require('./dimensions');
 
 var {
   StyleSheet,
