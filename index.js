@@ -14,13 +14,6 @@ var screen = React.Dimensions.get('window');
 var tweenState = require('react-tween-state');
 
 var styles = StyleSheet.create({
-  container: {
-    // flex: 1,
-    // shadowColor: 'rgb(0, 0, 0)',
-    // shadowOffset: { height: 2 },
-    // shadowOpacity: 0.2,
-    // shadowRadius: 3,
-  },
   titleContainer: {
     flexDirection: 'row',
   },
@@ -32,12 +25,11 @@ var styles = StyleSheet.create({
     backgroundColor: 'blue',
     position: 'absolute',
     height: 2,
-    width: 50 * vw
+    width: 46 * vw
   }
 });
 
 var SegmentedView = React.createClass({
-
   mixins: [tweenState.Mixin],
 
   propTypes: {
@@ -87,9 +79,6 @@ var SegmentedView = React.createClass({
   },
 
   measureHandler(ox, oy, width) {
-    console.log(ox, oy, width);
-    console.log(screen.width - ox - width);
-
     this.tweenState('barLeft', {
       easing: tweenState.easingTypes.easeInOutQuad,
       duration: this.state.duration,
@@ -141,7 +130,7 @@ var SegmentedView = React.createClass({
     );
 
     return (
-      <View { ...this.props } style={[ styles.container, this.props.style ]}>
+      <View { ...this.props } style={ this.props.style }>
         { this.props.barPosition == 'top' && barContainer }
 
         <View style={ styles.titleContainer }>
