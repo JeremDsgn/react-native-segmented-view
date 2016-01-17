@@ -42,9 +42,7 @@ var SegmentedView = React.createClass({
     index: PropTypes.number,
     barColor: PropTypes.string,
     barPosition: PropTypes.string,
-    underlayColor: PropTypes.string,
-    selectedTitleStyle: PropTypes.object,
-    titleStyle: PropTypes.object,
+    underlayColor: PropTypes.string
   },
 
   getDefaultProps() {
@@ -57,9 +55,7 @@ var SegmentedView = React.createClass({
       index: 0,
       barColor: '#44B7E1',
       barPosition:'top',
-      underlayColor: 'transparent',
-      selectedTitleStyle: null,
-      titleStyle: null,
+      underlayColor: 'transparent'
     };
   },
 
