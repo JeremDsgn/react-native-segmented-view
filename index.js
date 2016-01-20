@@ -1,7 +1,7 @@
-var React = require('react-native');
-var { vw, vh, vmin, vmax } = require('./dimensions');
+const React = require('react-native');
+const { vw, vh, vmin, vmax } = require('./dimensions');
 
-var {
+const {
   StyleSheet,
   Text,
   Image,
@@ -10,10 +10,10 @@ var {
   PropTypes,
 } = React;
 
-var screen = React.Dimensions.get('window');
-var tweenState = require('react-tween-state');
+const screen = React.Dimensions.get('window');
+const tweenState = require('react-tween-state');
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
   },
@@ -25,11 +25,11 @@ var styles = StyleSheet.create({
     backgroundColor: 'blue',
     position: 'absolute',
     height: 2,
-    width: 46 * vw
+    width: 46 * vw // Shoul be as a props
   }
 });
 
-var SegmentedView = React.createClass({
+const SegmentedView = React.createClass({
   mixins: [tweenState.Mixin],
 
   propTypes: {
@@ -38,6 +38,7 @@ var SegmentedView = React.createClass({
     onTransitionEnd: PropTypes.func,
     onPress: PropTypes.func,
     renderTitle: PropTypes.func,
+    renderContent: PropTypes.func,
     titles: PropTypes.array,
     index: PropTypes.number,
     barColor: PropTypes.string,
@@ -52,6 +53,7 @@ var SegmentedView = React.createClass({
       onTransitionEnd: () => {},
       onPress: () => {},
       renderTitle: null,
+      renderContent: null,
       index: 0,
       barColor: '#44B7E1',
       barPosition:'top',
@@ -71,6 +73,8 @@ var SegmentedView = React.createClass({
   },
 
   componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
+
     this.moveTo(nextProps.index);
   },
 
@@ -97,27 +101,25 @@ var SegmentedView = React.createClass({
 
   _renderTitle(title, i) {
     return (
-      <Text style={[ this.props.titleStyle, i === this.props.index && this.props.selectedTitleStyle ]}>{ title }</Text>
-    );
-  },
-
-  renderTitle(title, i) {
-    return (
       <TouchableHighlight key={ i } ref={ i } underlayColor={ this.props.underlayColor } onPress={ () => this.props.onPress(i) } style={ styles.title }>
-        { this.props.renderTitle ? this.props.renderTitle(title, i) : this._renderTitle(title, i) }
+        <Text style={[ this.props.titleStyle, i === this.props.index && this.props.selectedTitleStyle ]}>{ title }</Text>
       </TouchableHighlight>
     );
   },
 
+  _renderContent(content, i) {
+    return (
+      <View key={ i }>
+        { this.props.index === i ? content : undefined }
+      </View>
+    );
+  },
+
   render() {
-    var items = [];
-    var titles = this.props.titles;
+    const tabs = this.props.titles.map(this._renderTitle);
+    const contents = this.props.elements.map(this._renderContent);
 
-    for (var i = 0; i < titles.length; i++) {
-      items.push(this.renderTitle(titles[i], i));
-    }
-
-    var barContainer = (
+    const barContainer = (
       <View ref="bar" style={[styles.bar, {
         left: this.getTweeningValue('barLeft'),
         right: this.getTweeningValue('barRight'),
@@ -126,14 +128,20 @@ var SegmentedView = React.createClass({
     );
 
     return (
-      <View { ...this.props } style={ this.props.style }>
-        { this.props.barPosition == 'top' && barContainer }
+      <View>
+        <View { ...this.props } style={ this.props.style }>
+          { this.props.barPosition == 'top' && barContainer }
 
-        <View style={ styles.titleContainer }>
-          { items }
+          <View style={ styles.titleContainer }>
+            { tabs }
+          </View>
+
+          { this.props.barPosition == 'bottom' && barContainer }
         </View>
 
-        { this.props.barPosition == 'bottom' && barContainer }
+        <View style={ this.props.contentStyle }>
+          { contents }
+        </View>
       </View>
     );
   }
